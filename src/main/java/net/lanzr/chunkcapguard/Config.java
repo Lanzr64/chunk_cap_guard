@@ -1,4 +1,4 @@
-package net.lanzr.itemkit;
+package net.lanzr.chunkcapguard;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-@EventBusSubscriber(modid = ItemKit.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = ChunkCapGuard.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class Config {
     public static final ModConfigSpec SPEC;
     static {
@@ -18,7 +18,7 @@ public class Config {
     }
 
     // Scan interval in ticks (20 ticks = 1 second)
-    private static final String ENTITY_SCAN = "entity_cleaner";
+    private static final String COMMON_TAB = "CCG_Common";
 
     public static ModConfigSpec.IntValue SCAN_INTERVAL;
     public static ModConfigSpec.ConfigValue<List<? extends String>> EXTRA_ENTITY_IDS;
@@ -36,15 +36,15 @@ public class Config {
     private static void setup(ModConfigSpec.Builder builder) {
         SCAN_INTERVAL = builder
                 .comment("Scan interval in minutes")
-                .defineInRange(ENTITY_SCAN + ".scanInterval", 30, 1, Integer.MAX_VALUE);
+                .defineInRange(COMMON_TAB + ".scanInterval", 30, 1, Integer.MAX_VALUE);
 
         EXTRA_ENTITY_IDS = builder
                 .comment("Additional entity type IDs to monitor (ItemEntity is always tracked by default), e.g. [\"minecraft:item\", \"minecraft:zombie\"]")
-                .defineListAllowEmpty(ENTITY_SCAN + ".extraEntityIds", List.of("minecraft:item","minecraft:zombie"), () -> "", Config::validateEntityId);
+                .defineListAllowEmpty(COMMON_TAB + ".extraEntityIds", List.of("minecraft:item","minecraft:zombie"), () -> "", Config::validateEntityId);
 
         MAX_COUNT_PER_CHUNK = builder
                 .comment("Maximum number of tracked entities per chunk before cleanup")
-                .defineInRange(ENTITY_SCAN + ".maxCountPerChunk", 1000, 1, Integer.MAX_VALUE);
+                .defineInRange(COMMON_TAB + ".maxCountPerChunk", 1000, 1, Integer.MAX_VALUE);
     }
 
     @SubscribeEvent

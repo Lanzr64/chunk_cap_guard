@@ -1,25 +1,40 @@
+# Chunk Cap Guard
+中文 | [Engligh](docs/README_en.md)
+一个用于 **Minecraft** 的实体清理与性能管理模组。
 
-Installation information
-=======
+Chunk Cap Guard 会定期监控各个群系中**已加载区块**内的被追踪实体数量。当某个区块内的指定实体数量超过配置上限时，模组会清除该区块内的所有匹配实体，以防止局部实体堆积、缓解服务器卡顿并降低异常刷怪区域带来的性能压力。
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+## 功能特色
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+- 定期扫描已加载区块中的目标实体
+- 按区块统计指定实体数量
+- 当区块内目标实体超过上限时，清除该区块内所有匹配实体
+- 用于控制局部区域实体堆积导致的性能问题
+- 支持配置扫描周期、实体上限和目标实体列表
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+## 工作原理
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+Chunk Cap Guard 会按照固定周期执行检查，并处理当前世界中的已加载区块：
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+1. 遍历所有已加载区块
+2. 统计每个区块内配置目标实体的数量
+3. 将统计结果与配置的区块实体上限进行比较
+4. 如果某个区块内目标实体数量超过上限，则清除该区块内所有匹配的目标实体
+
+> 注意：Chunk Cap Guard 在区块超限时，会清除该区块内所有配置目标实体，而不是仅删除超出的部分。
+
+## 示例场景
+
+假设配置中监控以下实体：
+
+- `minecraft:zombie`
+- `minecraft:skeleton`
+
+某个区块中存在：
+
+- 30 个僵尸
+- 25 个骷髅
+
+则该区块内被统计的目标实体总数为 `55`。
+
+如果配置的区块实体上限为 `50`，Chunk Cap Guard 将清除该区块内所有僵尸和骷髅。
