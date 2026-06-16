@@ -2,14 +2,13 @@ package net.lanzr.chunkcapguard;
 
 import java.util.List;
 
-import com.example.examplemod.ExampleMod;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 
-@Mod.EventBusSubscriber(modid = ExampleMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = ChunkCapGuard.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Config {
     public static final ForgeConfigSpec SPEC;
     static {

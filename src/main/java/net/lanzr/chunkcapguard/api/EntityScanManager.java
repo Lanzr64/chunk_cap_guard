@@ -10,8 +10,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.tick.ServerTickEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@Mod.EventBusSubscriber(modid = net.lanzr.chunkcapguard.ChunkCapGuard.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EntityScanManager {
     private static int tickCounter = 0;
     private static final int CHECK_PERIOD = 20 * 60; // 1分钟检查一次
@@ -30,22 +32,24 @@ public class EntityScanManager {
     }
 
     @SubscribeEvent
-    public static void onServerTick(ServerTickEvent.Post event) {
-        var server = event.getServer();
-        if (server.getTickCount() % CHECK_PERIOD != 0) {
-            return;
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            var server = event.getServer();
+            if (server.getTickCount() % CHECK_PERIOD != 0) {
+                return;
+            }
+            if (server == null) return;
+
+            int intervalCount = Config.scanInterval;
+
+            if (intervalCount <= 0) return;
+
+            tickCounter++;
+            if (tickCounter < intervalCount) return;
+            tickCounter = 0;
+
+            clieanHandler(server);
         }
-        if (server == null) return;
-
-        int intervalCount = Config.scanInterval;
-
-        if (intervalCount <= 0) return;
-
-        tickCounter++;
-        if (tickCounter < intervalCount) return;
-        tickCounter = 0;
-
-        clieanHandler(server);
 
     }
 
