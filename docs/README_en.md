@@ -6,20 +6,20 @@ Chunk Cap Guard periodically monitors the number of tracked entities in **loaded
 
 ## Features
 
-- Periodically scans target entities in loaded chunks
+- Long-interval periodic scanning of target entities in loaded chunks
 - Counts specified entities on a per-chunk basis
 - Removes all matching entities from a chunk when the target entity count exceeds the limit
 - Helps control performance issues caused by localized entity overcrowding
 - Supports configurable scan interval, entity limit, and target entity list
+- Will broadcast over-limit chunks to all players
 
 ## How It Works
 
 Chunk Cap Guard performs checks at a fixed interval and processes all loaded chunks in the current world:
 
-1. Iterate through all loaded chunks
-2. Count the configured target entities in each chunk
-3. Compare the count against the configured per-chunk entity limit
-4. If the number of target entities in a chunk exceeds the limit, remove all matching target entities from that chunk
+1. Iterate through all entities
+2. Count target entities by block area
+3. If the number of target entities in a block area exceeds the upper limit, clear all matching target entities within that block area
 
 > Note: When a chunk exceeds the configured limit, Chunk Cap Guard removes all configured target entities in that chunk, rather than only the excess amount.
 
