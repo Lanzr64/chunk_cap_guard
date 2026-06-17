@@ -1,5 +1,6 @@
 package net.lanzr.chunkcapguard.api;
 
+import com.electronwill.nightconfig.core.conversion.SpecStringInRange;
 import net.lanzr.chunkcapguard.Config;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -84,11 +85,10 @@ public class EntityScanManager {
             List<Entity> entities = entry.getValue();
 
             if (entities.size() <= maxCount) continue;
-
-            Component message = Component.translatable("msg.cleanmsg",dimId,chunkPos.x,chunkPos.z,entities.size());
+            String msg =  Component.translatable("msg.cleanmsg",dimId,chunkPos.x,chunkPos.z,entities.size()).getString();
 
             for (ServerPlayer player : level.players()) {
-                player.sendSystemMessage(message);
+                player.sendSystemMessage(Component.literal(msg));
             }
 
             for (Entity entity : entities) {
