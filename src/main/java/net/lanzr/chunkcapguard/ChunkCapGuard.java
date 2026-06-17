@@ -26,11 +26,13 @@ public class ChunkCapGuard {
 
     @SubscribeEvent
     public void onRegisterCommands(RegisterCommandsEvent event) {
-        event.getDispatcher().register(Commands.literal("tyj-cleannow")
+        event.getDispatcher().register(Commands.literal("tyj")
+            .then(Commands.literal("cleannow")
                 .executes(ctx -> {
                     EntityScanManager.cleanNow(ctx.getSource().getServer());
                     return 1;
                 }).requires(ctx -> ctx.hasPermission(4))
+            )
         );
     }
 }
