@@ -3,6 +3,7 @@ package net.lanzr.chunkcapguard;
 import net.lanzr.chunkcapguard.api.EntityScanManager;
 
 import net.minecraft.commands.Commands;
+import net.minecraft.network.protocol.game.ClientboundCommandsPacket;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -26,11 +27,13 @@ public class ChunkCapGuard {
     }
 
     public void onRegisterCommands(RegisterCommandsEvent event) {
-        event.getDispatcher().register(Commands.literal("tyj-cleannow")
+        event.getDispatcher().register(Commands.literal("tyj")
+            .then(Commands.literal("cleannow")
                 .executes(ctx -> {
                     EntityScanManager.cleanNow(ctx.getSource().getServer());
                     return 1;
                 }).requires(ctx -> ctx.hasPermission(4))
+            )
         );
     }
 }

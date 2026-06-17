@@ -85,10 +85,9 @@ public class EntityScanManager {
             List<Entity> entities = entry.getValue();
 
             if (entities.size() <= maxCount) continue;
-            String msg =  Component.translatable("msg.cleanmsg",dimId,chunkPos.x,chunkPos.z,entities.size()).getString();
 
             for (ServerPlayer player : level.players()) {
-                player.sendSystemMessage(Component.literal(msg));
+                player.sendSystemMessage(Component.literal(String.format(Config.msg_cleanmsg, dimId, chunkPos.x, chunkPos.z, entities.size())));
             }
 
             for (Entity entity : entities) {
