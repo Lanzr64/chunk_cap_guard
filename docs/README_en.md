@@ -12,6 +12,7 @@ Chunk Cap Guard periodically monitors the number of tracked entities in **loaded
 - Helps control performance issues caused by localized entity overcrowding
 - Supports configurable scan interval, entity limit, and target entity list
 - Will broadcast over-limit chunks to all players
+- Announcement text that can be changed in the configuration
 
 ## How It Works
 
@@ -40,4 +41,4 @@ The total number of tracked target entities in that chunk is `55`.
 If the configured per-chunk entity limit is `50`, Chunk Cap Guard will remove all Zombies and Skeletons from that chunk.
 
 ## Command
-- `tyj-cleannow` Execute a cleanup immediately and reset the cleanup timer
+- `tyj cleannow` Execute a cleanup immediately and reset the cleanup timer
